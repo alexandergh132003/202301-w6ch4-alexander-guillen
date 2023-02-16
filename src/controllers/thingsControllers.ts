@@ -15,11 +15,11 @@ export const getKnownThing = (req: Request, res: Response) => {
 
 export const deleteKnownThing = (req: Request, res: Response) => {
   const thingId = +req.params.idThing;
-  const filteredKnownThings = knownThings.filter(
-    ({ idThing }) => idThing !== thingId
-  );
+  const matchedThing = knownThings.find(({ idThing }) => idThing === thingId)!;
+  const matchedThingIndex = knownThings.indexOf(matchedThing);
+  knownThings.splice(matchedThingIndex, 1);
 
-  res.status(200).json(filteredKnownThings);
+  res.status(200).json(knownThings);
 };
 
 export const createKnownThing = (req: Request, res: Response) => {
@@ -31,11 +31,11 @@ export const createKnownThing = (req: Request, res: Response) => {
 
 export const modifyKnownThing = (req: Request, res: Response) => {
   const modifiedKnownThing: Thing = req.body;
-  const newKnownThings: Things = knownThings.map((currentKnownThing) =>
-    currentKnownThing.idThing === modifiedKnownThing.idThing
-      ? modifiedKnownThing
-      : currentKnownThing
-  );
+  knownThings.forEach(({ idThing }, index) => {
+    if (idThing === modifiedKnownThing.idThing) {
+      knownThings[index] = modifiedKnownThing;
+    }
+  });
 
-  res.status(200).json(newKnownThings);
+  res.status(200).json(knownThings);
 };
