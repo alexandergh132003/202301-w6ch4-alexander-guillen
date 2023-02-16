@@ -30,12 +30,26 @@ export const createKnownThing = (req: Request, res: Response) => {
 };
 
 export const modifyKnownThing = (req: Request, res: Response) => {
-  const modifiedKnownThing: Thing = req.body;
-  knownThings.forEach(({ idThing }, index) => {
-    if (idThing === modifiedKnownThing.idThing) {
-      knownThings[index] = modifiedKnownThing;
-    }
-  });
+  const modifiedKnownThing = req.body;
+  const modifiedKnownThingKeys = Object.keys(modifiedKnownThing);
+  const hasThingProperties =
+    modifiedKnownThingKeys.includes("idThing") &&
+    modifiedKnownThingKeys.includes("name") &&
+    modifiedKnownThing.length === 2;
 
-  res.status(200).json(knownThings);
+  if (hasThingProperties) {
+    knownThings.forEach(({ idThing }, index) => {
+      if (idThing === (modifiedKnownThing as Thing).idThing) {
+        knownThings[index] = modifiedKnownThing;
+      }
+    });
+
+    res.status(200).json(knownThings);
+  } else {
+    res.status(400).send(`
+    Bad Request
+    The request could not be understood by the server due to malformed object syntax. 
+    Object should only include 'name' and 'idThing' properties.
+    `);
+  }
 };
