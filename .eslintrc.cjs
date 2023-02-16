@@ -8,11 +8,19 @@ module.exports = {
     {
       extends: ["xo-typescript", "prettier"],
       files: ["*.ts", "*.tsx"],
+      rule: {
+        "@typescript-eslint/consistent-type-definitions": [
+          "error",
+          "interface",
+        ],
+      },
     },
   ],
   parserOptions: {
     ecmaVersion: "latest",
     sourceType: "module",
   },
-  rules: {},
+  rules: {
+    "@typescript-eslint/consistent-type-definitions": "off",
+  },
 };

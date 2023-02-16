@@ -3,8 +3,12 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "type": "module",
   "scripts": {
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "build": "tsc",
+    "build:dev": "tsc --watch",
+    "start": "node dist/js/index.js"
   },
   "keywords": [],
   "author": "",
